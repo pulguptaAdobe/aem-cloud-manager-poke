@@ -31,20 +31,21 @@ public class CMPing implements Callable<CMInstance> {
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime lastInvocation = this.getLastInvocation();
 
-        if (lastInvocation.isAfter(now.plus(this.instance.getInterval(), ChronoUnit.SECONDS))) {
+        if (now.isAfter(lastInvocation.plusSeconds(this.instance.getInterval()))) {
             logger.info(String.format("About to invoke %s since last invocation has elapsed", this.instance.getUrl()));
             try (CloseableHttpClient httpclient = HttpClients.createDefault()) {
                 HttpGet get = new HttpGet(this.instance.getUrl());
                 CloseableHttpResponse response = httpclient.execute(get);
 
                 if (response.getStatusLine().getStatusCode() / 100 == 2) {
-                    logger.info(String.format("Received a %d when invoking the %s url",
+                    logger.info(String.format("Received a %d when invoking the %s",
                             response.getStatusLine().getStatusCode(), this.instance.getUrl()));
                 } else {
-                    logger.warn(String.format("Received a %d when invoking the %s url",
+                    logger.warn(String.format("Received a %d when invoking the %s",
                             response.getStatusLine().getStatusCode(), this.instance.getUrl()));
                 }
             }
+            lastInvocation = now;
             
         } else {
             logger.info(String.format("No need to invoke since lastInvocation has not elapsed necessary amount of time",

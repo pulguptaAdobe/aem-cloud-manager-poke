@@ -55,8 +55,8 @@ public class Main {
                     resultList.add(result);
                 }
 
-                // Give the threads 60 seconds to work
-                executor.awaitTermination(60, TimeUnit.SECONDS);
+                // Give the threads a few seconds to work
+                executor.awaitTermination(30, TimeUnit.SECONDS);
 
                 for (Future<CMInstance> futureCM : resultList) {
                     CMList list = new CMList();
@@ -69,9 +69,10 @@ public class Main {
 
                 CMWriter writer = new FileCMWriter();
                 writer.write(JsonParser.parseString(gson.toJson(cmList)).getAsJsonObject(), arguments.get(1));
-
-                // Sleep for 2 minutes before we do it all over again
-                Thread.sleep(120000);
+                
+                int sleepMs = 60000;
+                logger.info(String.format("About to sleep for %d seconds", sleepMs/1000));
+                Thread.sleep(sleepMs);
             } catch (CMReaderException e) {
                 logger.error(e.getMessage(), e);
             } catch (InterruptedException e) {
