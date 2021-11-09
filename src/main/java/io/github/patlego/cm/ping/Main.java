@@ -44,7 +44,7 @@ public class Main {
                 List<String> arguments = getArgs(args);
                 CMReader fileReader = new FileCMReader();
 
-                JsonArray cmInstances = fileReader.getCMInstances(arguments.get(1));
+                JsonObject cmInstances = fileReader.getCMInstances(arguments.get(1));
                 CMList cmList = gson.fromJson(cmInstances, CMList.class);
 
                 ExecutorService executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(5);
@@ -68,7 +68,7 @@ public class Main {
                 executor.shutdown();
 
                 CMWriter writer = new FileCMWriter();
-                writer.write(JsonParser.parseString(gson.toJson(cmList)).getAsJsonArray(), arguments.get(1));
+                writer.write(JsonParser.parseString(gson.toJson(cmList)).getAsJsonObject(), arguments.get(1));
 
                 // Sleep for 2 minutes before we do it all over again
                 Thread.sleep(120000);

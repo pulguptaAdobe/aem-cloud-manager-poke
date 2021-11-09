@@ -1,9 +1,9 @@
 package io.github.patlego.cm.ping.reader;
 
-import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 public interface CMReader {
     
-    public JsonArray getCMInstances(String location) throws CMReaderException;
+    public JsonObject getCMInstances(String location) throws CMReaderException;
 
 }

@@ -1,0 +1,19 @@
+{
+    "cmInstances": [
+        {
+            "url": "https://reqres.in/api/products/3",
+            "interval": 60,
+            "lastInvoked": null
+        },
+        {
+            "url": "https://reqres.in/api/products/2",
+            "interval": 60,
+            "lastInvoked": null
+        },
+        {
+            "url": "https://reqres.in/api/products/1",
+            "interval": 60,
+            "lastInvoked": null
+        }
+    ]
+}
