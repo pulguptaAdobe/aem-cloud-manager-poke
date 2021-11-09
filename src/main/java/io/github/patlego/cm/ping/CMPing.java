@@ -11,7 +11,6 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.slf4j.Logger;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import io.github.patlego.cm.ping.models.CMInstance;
