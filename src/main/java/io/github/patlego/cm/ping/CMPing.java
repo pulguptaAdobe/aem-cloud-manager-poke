@@ -20,7 +20,7 @@ public class CMPing implements Callable<CMInstance> {
     private CMInstance instance;
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     private Logger logger = LoggerFactory.getLogger(this.getClass());
-    
+
     public CMPing(CMInstance instance) {
         this.instance = instance;
     }
@@ -33,28 +33,30 @@ public class CMPing implements Callable<CMInstance> {
 
         if (lastInvocation.isAfter(now.plus(this.instance.getInterval(), ChronoUnit.SECONDS))) {
             logger.info(String.format("About to invoke %s since last invocation has elapsed", this.instance.getUrl()));
-            try(CloseableHttpClient httpclient = HttpClients.createDefault()) {
+            try (CloseableHttpClient httpclient = HttpClients.createDefault()) {
                 HttpGet get = new HttpGet(this.instance.getUrl());
                 CloseableHttpResponse response = httpclient.execute(get);
 
                 if (response.getStatusLine().getStatusCode() / 100 == 2) {
-                    logger.info(String.format("Received a %d when invoking the %s url", response.getStatusLine().getStatusCode(), this.instance.getUrl()));
+                    logger.info(String.format("Received a %d when invoking the %s url",
+                            response.getStatusLine().getStatusCode(), this.instance.getUrl()));
                 } else {
-                    logger.warn(String.format("Received a %d when invoking the %s url", response.getStatusLine().getStatusCode(), this.instance.getUrl()));
+                    logger.warn(String.format("Received a %d when invoking the %s url",
+                            response.getStatusLine().getStatusCode(), this.instance.getUrl()));
                 }
             }
+            this.instance.setLastInvocation(this.localDateTimeToString(lastInvocation));
         } else {
-            logger.info(String.format("No need to invoke since lastInvocation has not elapsed necessary amount of time", this.instance.getUrl()));
+            logger.info(String.format("No need to invoke since lastInvocation has not elapsed necessary amount of time",
+                    this.instance.getUrl()));
         }
-
+        
         logger.info(String.format("Completed Cloud Manager ping for %s", this.instance.getUrl()));
-        this.instance.setLastInvocation(this.localDateTimeToString(lastInvocation));
-
         return this.instance;
     }
 
     public LocalDateTime getLastInvocation() {
-        if(null == this.instance.getLastInvocation()) {
+        if (null == this.instance.getLastInvocation()) {
             return LocalDateTime.now();
         } else {
             return LocalDateTime.parse(this.instance.getLastInvocation(), formatter);
@@ -64,5 +66,5 @@ public class CMPing implements Callable<CMInstance> {
     public String localDateTimeToString(LocalDateTime localDateTime) {
         return localDateTime.format(this.formatter);
     }
-    
+
 }
