@@ -55,10 +55,12 @@ public class Main {
                     resultList.add(result);
                 }
 
+                // Give the threads 60 seconds to work
                 executor.awaitTermination(60, TimeUnit.SECONDS);
 
                 for (Future<CMInstance> futureCM : resultList) {
                     CMList list = new CMList();
+                    // This is a blocking call
                     CMInstance instance = futureCM.get();
                     list.setCmInstance(instance);
                 }
@@ -68,6 +70,7 @@ public class Main {
                 CMWriter writer = new FileCMWriter();
                 writer.write(JsonParser.parseString(gson.toJson(cmList)).getAsJsonArray(), arguments.get(1));
 
+                // Sleep for 2 minutes before we do it all over again
                 Thread.sleep(120000);
             } catch (CMReaderException e) {
                 logger.error(e.getMessage(), e);
