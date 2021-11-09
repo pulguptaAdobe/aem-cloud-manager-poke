@@ -45,12 +45,14 @@ public class CMPing implements Callable<CMInstance> {
                             response.getStatusLine().getStatusCode(), this.instance.getUrl()));
                 }
             }
-            this.instance.setLastInvocation(this.localDateTimeToString(lastInvocation));
+            
         } else {
             logger.info(String.format("No need to invoke since lastInvocation has not elapsed necessary amount of time",
                     this.instance.getUrl()));
         }
         
+        // Need to set this incase it is null and so it is set to now that way going forward it will check against the previous now and not right now.
+        this.instance.setLastInvocation(this.localDateTimeToString(lastInvocation));
         logger.info(String.format("Completed Cloud Manager ping for %s", this.instance.getUrl()));
         return this.instance;
     }
