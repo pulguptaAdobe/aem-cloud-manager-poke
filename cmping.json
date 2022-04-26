@@ -1,19 +1,26 @@
 {
-    "cmInstances": [
-        {
-            "url": "https://reqres.in/api/products/3",
-            "interval": 60,
-            "lastInvoked": null
-        },
-        {
-            "url": "https://reqres.in/api/products/2",
-            "interval": 60,
-            "lastInvoked": null
-        },
-        {
-            "url": "https://reqres.in/api/products/1",
-            "interval": 60,
-            "lastInvoked": null
-        }
-    ]
+  "cmInstances": [
+    {
+      "url": "https://author-p12169-e412460.adobeaemcloud.com",
+      "interval": 10,
+      "lastInvocation": "2022-04-25 21:35:13",
+      "auth": {
+        "username": "cmping",
+        "password": "cmping"
+      },
+      "path": "/content/dam.1.json"
+    },
+    {
+      "url": "https://author-p12169-e473418.adobeaemcloud.com",
+      "interval": 10,
+      "lastInvocation": "2022-04-25 21:35:13",
+      "auth": {
+        "username": "cmping",
+        "password": "cmping"
+      },
+      "path": "/content/dam.1.json"
+    }
+  ],
+  "terminate": false,
+  "sleep": 10
 }

@@ -3,9 +3,32 @@ package io.github.patlego.cm.ping.models;
 import java.util.LinkedList;
 import java.util.List;
 
-public class CMList {
+public class AppConfig {
 
-    public List<CMInstance> cmInstances;
+    private final transient long DEFAULT_SLEEP_MS = 5000;
+
+    private List<CMInstance> cmInstances;
+    private boolean terminate;
+    private long sleep;
+
+    public long getSleep() {
+        if (this.sleep <= 0) {
+            return DEFAULT_SLEEP_MS;
+        }
+        return sleep;
+    }
+
+    public void setSleep(long sleep) {
+        this.sleep = sleep;
+    }
+
+    public boolean isTerminated() {
+        return terminate;
+    }
+
+    public void setTerminate(boolean terminate) {
+        this.terminate = terminate;
+    }
 
     public List<CMInstance> getCmInstances() {
         if (cmInstances == null) {

@@ -21,7 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import io.github.patlego.cm.ping.models.CMInstance;
-import io.github.patlego.cm.ping.models.CMList;
+import io.github.patlego.cm.ping.models.AppConfig;
 import io.github.patlego.cm.ping.reader.FileCMReader;
 import io.github.patlego.cm.ping.writer.CMWriter;
 import io.github.patlego.cm.ping.writer.CMWriterException;
@@ -35,31 +35,33 @@ import io.github.patlego.cm.ping.reader.CMReaderException;
 public class Main {
 
     private static Logger logger = LoggerFactory.getLogger(Main.class);
-    private static Gson gson = new GsonBuilder().create();
+    private static Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     public static void main(String[] args) {
         logger.info("Starting up Cloud Manager poke utility");
-        while (Boolean.TRUE.equals(true)) {
+        
+        AppConfig appConfig = null;
+
+        // Run the program
+        do {
             try {
+                // Load the JSON config into memory
                 List<String> arguments = getArgs(args);
                 CMReader fileReader = new FileCMReader();
 
-                JsonObject cmInstances = fileReader.getCMInstances(arguments.get(1));
-                CMList cmList = gson.fromJson(cmInstances, CMList.class);
+                JsonObject appConfigJson = fileReader.getCMInstances(arguments.get(1));
+                appConfig = gson.fromJson(appConfigJson, AppConfig.class);
 
                 ExecutorService executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(5);
                 List<Future<CMInstance>> resultList = new LinkedList<>();
-                for (CMInstance instance : cmList.cmInstances) {
+                for (CMInstance instance : appConfig.getCmInstances()) {
                     Callable<CMInstance> cmPoke = new CMPing(instance);
                     Future<CMInstance> result = executor.submit(cmPoke);
                     resultList.add(result);
                 }
 
-                // Give the threads a few seconds to work
-                executor.awaitTermination(30, TimeUnit.SECONDS);
-
                 for (Future<CMInstance> futureCM : resultList) {
-                    CMList list = new CMList();
+                    AppConfig list = new AppConfig();
                     // This is a blocking call
                     CMInstance instance = futureCM.get();
                     list.setCmInstance(instance);
@@ -68,23 +70,25 @@ public class Main {
                 executor.shutdown();
 
                 CMWriter writer = new FileCMWriter();
-                writer.write(JsonParser.parseString(gson.toJson(cmList)).getAsJsonObject(), arguments.get(1));
-                
-                int sleepMs = 60000;
-                logger.info(String.format("About to sleep for %d seconds", sleepMs/1000));
-                Thread.sleep(sleepMs);
+                writer.write(gson.toJson(appConfig), arguments.get(1));
+
+                logger.info(String.format("About to sleep for %d seconds", appConfig.getSleep()));
+                Thread.sleep(appConfig.getSleep() * 1000);
             } catch (CMReaderException e) {
                 logger.error(e.getMessage(), e);
+                System.exit(1);
             } catch (InterruptedException e) {
                 logger.error(e.getMessage(), e);
             } catch (ExecutionException e) {
                 logger.error(e.getMessage(), e);
             } catch (JsonSyntaxException e) {
                 logger.error(e.getMessage(), e);
+                System.exit(1);
             } catch (CMWriterException e) {
                 logger.error(e.getMessage(), e);
+                System.exit(1);
             }
-        }
+        } while(Boolean.FALSE.equals(appConfig.isTerminated()));
 
     }
 
