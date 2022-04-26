@@ -31,6 +31,8 @@ With this will perform a set of GET requests using Java Callable API in order to
 
 **Note:** The sleep parameter is defined in seconds. This will hault the entire process for x seconds before trying again
 
+**Note:** The interval parameter is defined in seconds and it will not call an AEM instance until an intervals worth of time has gone between the last invocation and the upcoming one
+
 ## How to use
 
 `java -jar cloudmanager-ping.jar --location <file_path>`
