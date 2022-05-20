@@ -39,6 +39,8 @@ With this will perform a set of GET requests using Java Callable API in order to
 
 file_path is the JSON file path location representing all of the AEMaaCS instances
 
+**Note:** Internally we go straight to the Author and by pass the CDN and Dispatcher which prevents the request from being cached. If you are going through the CDN and/or Dispatcher make sure that the request does not get cached or else you will not be able to keep the environment awake
+
 ## How to build
 
 `mvn clean install`
