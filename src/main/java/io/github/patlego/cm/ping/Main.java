@@ -1,5 +1,6 @@
 package io.github.patlego.cm.ping;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -106,6 +107,10 @@ public class Main {
                     "Invalid command, please make sure to execute the cli with --location <location>");
         }
 
-        return List.of(locationStr, locationPath);
+        List<String> list = new ArrayList<>();
+        list.add(locationStr);
+        list.add(locationPath);
+        return list;
+        //return List.of(locationStr, locationPath);
     }
 }

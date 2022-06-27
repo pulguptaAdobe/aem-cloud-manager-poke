@@ -3,10 +3,10 @@
     {
       "url": "https://author-p44171-e378497.adobeaemcloud.com",
       "interval": 600,
-      "lastInvocation": "",
+      "lastInvocation": "2022-06-27 13:55:01",
       "auth": {
-        "username": "",
-        "password": ""
+        "username": "testadmin",
+        "password": "testadmin"
       },
       "path": "/content/dam.1.json"
     }
