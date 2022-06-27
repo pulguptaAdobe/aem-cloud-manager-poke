@@ -1,26 +1,16 @@
 {
   "cmInstances": [
     {
-      "url": "https://author-p12169-e412460.adobeaemcloud.com",
-      "interval": 10,
-      "lastInvocation": "2022-04-25 21:35:13",
+      "url": "https://author-p44171-e378497.adobeaemcloud.com",
+      "interval": 600,
+      "lastInvocation": "",
       "auth": {
-        "username": "cmping",
-        "password": "cmping"
-      },
-      "path": "/content/dam.1.json"
-    },
-    {
-      "url": "https://author-p12169-e473418.adobeaemcloud.com",
-      "interval": 10,
-      "lastInvocation": "2022-04-25 21:35:13",
-      "auth": {
-        "username": "cmping",
-        "password": "cmping"
+        "username": "",
+        "password": ""
       },
       "path": "/content/dam.1.json"
     }
   ],
   "terminate": false,
-  "sleep": 10
+  "sleep": 60
 }
